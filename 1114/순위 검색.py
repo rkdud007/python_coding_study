@@ -7,8 +7,8 @@ def solution(info, query):
         match = k.split(' ')
         for i in match:
             if i != 'and' or i != '-':
-                print(i, end= " ")
-
+                for m in info_re:
+                    
 
     print(info_re)
     return answer

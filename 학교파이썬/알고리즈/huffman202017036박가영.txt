@@ -1,0 +1,68 @@
+# 2020170365 박가영 알고리즘 과제4번 제출합니다
+n = int(input())
+freq = []
+char = []
+for i in range(n):
+    freq.append(int(input()))
+    char.append(chr(i+65))
+
+class Node:
+    def __init__(self, freq, symbol, left=None, right=None):
+        self.freq = freq
+        self.symbol = symbol
+        self.left = left
+        self.right = right
+
+def minPriorityQ(char, freq):
+    queue = list()
+    for i in range(len(char)):
+        queue.append(Node(freq[i], char[i]))
+    queue = sorted(queue, key=lambda x: x.freq)
+    return queue
+    
+def extractMin(q):
+    answer = q[0]
+    del q[0]
+    return answer
+
+def insertQ(q,z):
+    q.append(z)
+    q = sorted(q, key=lambda x: x.freq)
+    return q
+
+def huffman(char, freq):
+    n = len(char)
+    q = minPriorityQ(char,freq)
+    for _ in range(n-1):
+        x = extractMin(q)
+        y = extractMin(q)
+        z = Node(int(x.freq + y.freq), " ")
+        z.left = x
+        z.right = y
+        q = insertQ(q, z)
+
+    return extractMin(q)
+
+
+def preorder(root, codeword, answer):
+    current = root
+    if current.symbol != " ":
+        answer[current.symbol] = codeword
+    if(current.left is not None):
+        preorder(current.left, codeword+ "0", answer)
+    if(current.right is not None):
+        preorder(current.right, codeword+ "1", answer)
+    return answer
+
+def huffmanEncoding(char, freq):
+    root = huffman(char, freq)
+    answer = dict()
+    answer = preorder(root, "", answer)
+    answer = sorted(answer.items(), key= lambda x: x[0])
+    for char, code in answer:
+        print(code)
+            
+            
+
+
+huffmanEncoding(char,freq)
